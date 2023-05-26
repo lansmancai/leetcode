@@ -1,0 +1,27 @@
+级别为困难
+我自己写出了一个n2次方的解答，测试OK，但leetcode超时了，记录如下
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int len =  heights.length;
+        int[] tmp = new int[len];
+        int smax = 0;
+        int min = heights[0];
+        int tmpmax = 0;
+
+        for(int i = 0; i < len; i++) {
+            min  = heights[i];
+            int j = i;
+            while(j >= 0) {
+                if(heights[j] < min) {
+                    min = heights[j];
+                }
+                tmpmax = min * (i - j + 1);
+                if(tmpmax > smax) {
+                    smax = tmpmax;
+                }
+                j--;
+            }
+        }
+        return smax;
+    }
+}
