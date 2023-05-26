@@ -1,5 +1,6 @@
 级别为困难
 我自己写出了一个n2次方的解答，测试OK，但leetcode超时了，记录如下
+逻辑是从右到左，从1到尽头算出最大矩形面积。
 class Solution {
     public int largestRectangleArea(int[] heights) {
         int len =  heights.length;
