@@ -26,3 +26,59 @@ class Solution {
         return smax;
     }
 }
+关于优化版本涉及到一个数学逻辑，最大的面积肯定是刚好是一根或者多跟柱子的顶部，证明很简单，若不是任何一根柱子的顶部那么最大面积完全可以继续向上一层，最大面积就不成立，那么进一步可以推断出是这跟或者多跟柱子的柱子的
+最大拓展，最大拓展是找出两边小于它的坐标相减再减一再乘以它的柱高，总而言之，找出每个柱子的最大拓展，遍历出最大的拓展就是最大的面积，找出柱子左右小于自己高度的坐标用单调栈的方式可以将时间复杂度从n的平方优化成n.
+这里两个数组分别用单调栈求出每个柱子左右小于它高度的坐标。
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int len = heights.length;
+        if(len == 1) return heights[0];
+
+        int[] left = new int[len];//此数组记录每个柱子左边第一个高度小于自己的坐标值
+        int[] right = new int[len];//此数组记录每个柱子右边第一个高度小于自己的坐标值
+        Arrays.fill(right, len);//填充默认值为右边边界
+        Arrays.fill(left, -1);//填充默认值为左边边界
+        Stack<Integer> stack = new Stack<Integer>();
+        int max = 0; //最大面积
+
+        stack.push(0);
+        for(int i = 1; i < len; i++) {
+            if(heights[i] >= heights[stack.peek()]) {
+                stack.push(i);
+            }
+            else {
+                while (!stack.isEmpty() && heights[i] < heights[stack.peek()]) {
+                    right[stack.peek()] = i;
+                    stack.pop();
+                }
+                stack.push(i);
+            }
+        }
+
+        while(!stack.isEmpty()) {
+            stack.pop();
+        }
+
+        stack.push(len - 1);
+
+        for(int j = len - 2; j >= 0; j--) {
+            if(heights[j] >= heights[stack.peek()]) {
+                stack.push(j);
+            }
+            else {
+                while (!stack.isEmpty() && heights[j] < heights[stack.peek()]) {
+                    left[stack.peek()] = j;
+                    stack.pop();
+                }
+                stack.push(j);
+            }
+        }
+
+        for(int k = 0; k < len; k++) {
+            max = Math.max(((right[k] - left[k] - 1) * heights[k]),max);
+        }
+        return  max;
+    }
+}
+
+
