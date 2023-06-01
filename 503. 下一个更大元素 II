@@ -64,3 +64,34 @@ class Solution {
     }
 }
 
+这里可以再做性能优化，既模拟的第二个数组不用再进行入栈，只是对比，尝试把第一个数组能出栈的都筛选出栈
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int len = nums.length;
+
+        int[] res = new int[nums.length];
+        Arrays.fill(res,-1);
+
+        Stack<Integer> stack = new Stack<Integer>();
+
+        stack.push(0);
+
+        for(int i = 1; i < len * 2; i++) {
+            if(nums[i % len] <= nums[stack.peek() % len]){
+                if(i < len) {
+                    stack.push(i);
+                }
+            }
+            else {
+                while(!stack.isEmpty() && nums[i % len] > nums[stack.peek() % len]) {
+                    res[stack.peek() % len] = nums[i % len];
+                    stack.pop(); 
+                }
+                if(i < len) {
+                    stack.push(i);
+                }
+            }
+        }
+        return res;
+    }
+}
