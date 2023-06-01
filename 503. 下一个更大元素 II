@@ -1,0 +1,66 @@
+503. 下一个更大元素 II
+
+直接解法是直接两个这样的数组拼装出来，再用单调栈
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int len = nums.length + nums.length;
+        int[] dnums = new int[len];
+        for(int k = 0; k < len; k++) {
+            dnums[k] = nums[k % nums.length];
+        }
+        int[] res = new int[nums.length];
+        Arrays.fill(res,-1);
+        Deque<Integer> stack = new LinkedList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        stack.push(0);
+        for(int i = 1; i < dnums.length; i++) {
+            if(dnums[i] <= dnums[stack.peek()]){
+                stack.push(i);
+            }
+            else {
+                while(!stack.isEmpty()&& dnums[i] > dnums[stack.peek()]) {
+                    if(stack.peek() < nums.length) {
+                        res[stack.peek()] = dnums[i];
+                    }
+                    stack.pop();
+                }
+                stack.push(i);
+            }
+        }
+        for(int k = 0; k < nums.length; k++) {
+            if(map.containsKey(nums[k])) {
+                res[k] = map.get(nums[k]);
+            }
+        }
+        return res;
+    }
+}
+
+尝试不用拼接而模拟拼接的效果，这样进一步提升性能，逻辑上所有的数字都被所有其他数字比了一遍，但使用模拟循环数组的方式 没有拼接和拷贝新数组。节省了空间和时间
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int len = nums.length;
+
+        int[] res = new int[nums.length];
+        Arrays.fill(res,-1);
+
+        Stack<Integer> stack = new Stack<Integer>();
+
+        stack.push(0);
+
+        for(int i = 1; i < len * 2; i++) {
+            if(nums[i % len] <= nums[stack.peek() % len]){
+                stack.push(i);
+            }
+            else {
+                while(!stack.isEmpty() && nums[i % len] > nums[stack.peek() % len]) {
+                    res[stack.peek() % len] = nums[i % len];
+                    stack.pop(); 
+                }
+                stack.push(i);
+            }
+        }
+        return res;
+    }
+}
+
