@@ -3,7 +3,7 @@
 暴力解法是遍历每个柱子，每次都求出它左右最高两个柱子高度后尝试累加，时间复杂度为n的平方
 使用动态规划的方式先把每个柱子左右做高的高度给算出来再运算，可将复杂度优化到n
         int len = heights.length;
-        if(len <= 2) return 0;
+        if(len <= 2) return 0; //如果柱子不到3个，是没有凹槽的 直接返回0
         int[] left = new int[len];//保存每个柱子左边最高的高度
         int[] right = new int[len];//保存每个柱子右边最高的高度
 
