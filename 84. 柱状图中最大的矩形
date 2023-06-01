@@ -81,4 +81,58 @@ class Solution {
     }
 }
 
+虽然实现了n时间复杂度的算法但如果可以直接在单调栈每次出入栈操作计算而不用建立两个数据，则可以同时优化时间复杂度和空间复杂度。
+这里需要逻辑上解决两个问题，单调栈采取递减的方式，那么如果两个柱子一样高，如何操作，经过推演，同样高度的情况直接入栈最右的一个即可。
+按递减单调栈方式，入栈过程中，每个被出栈的柱子，说明找到了右边第一个小于它的值，那么左边第一个小于他高度的坐标就是它出栈后的栈头，或者出栈后栈为空就是坐标-1
+也就是左边没有小于它高度的柱子了。那么就可以计算出出栈柱子的最大拓展并记录。
+栈排好了，还在栈中的柱子已经是递减状态，那么 用高度0挨个与栈顶柱子高度对比并出栈，（这里要考虑柱子高度为0的情况但是根据题目柱子都是大于0的，无需考虑）
+每个出栈的柱子右边已经小于他的柱子，所以第一个小于它的柱子坐标可以记成len(数组长度），左边第一个小于它高度的坐标要么是出栈后下一个栈顶值，要么栈为空的话说明
+左边没有一个小于它的，那么坐标可以记为-1，如此将单调栈中值全部出栈后，就计算出全部柱子的最大拓展，从中比较出最大面积
+代码如下
 
+class Solution {
+    public static int largestRectangleArea(int[] heights) {
+        int len = heights.length;
+        if(len == 1) return heights[0];//如果柱子只有1个 直接返回柱子长度
+
+        Stack<Integer> stack = new Stack<Integer>();
+        int maxsize = 0;
+        
+        stack.push(0);
+
+        for(int i = 1; i < len; i++) {
+            if(heights[i] > heights[stack.peek()]) {
+                stack.push(i);
+            }
+            else if(heights[i] == heights[stack.peek()]) {
+                stack.pop();
+                stack.push(i);
+            }
+            else {
+                while(!stack.isEmpty() && heights[i] < heights[stack.peek()]) {
+                    int h = heights[stack.peek()];
+                    stack.pop();
+                    if(stack.isEmpty()) {
+                        maxsize = Math.max(maxsize, h * i);
+                    }
+                    else {
+                        maxsize = Math.max(maxsize, h * (i - stack.peek() - 1));
+                    }
+                }
+                stack.push(i);
+            }
+        }
+
+        while(!stack.isEmpty()) {
+                int h = heights[stack.peek()];
+                stack.pop();
+                if(stack.isEmpty()) {
+                    maxsize = Math.max(maxsize, h * len);
+                }
+                else {
+                    maxsize = Math.max(maxsize, h * (len - stack.peek() - 1));
+                }
+        }
+        return maxsize;
+    }
+}
