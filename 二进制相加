@@ -1,0 +1,29 @@
+public class TestInt {
+    public String addBinary(String a, String b) {
+        StringBuilder result = new StringBuilder();
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int carry = 0;
+        int tmpa = 0;
+        int tmpb = 0;
+        int sum = 0;
+
+        while(i >= 0 || j >= 0) {
+            tmpa = i >= 0 ? a.charAt(i) - '0' : 0;
+            tmpb = j >= 0 ? b.charAt(j) - '0' : 0;
+            sum = (tmpa +tmpb + carry) >= 2 ? (tmpa +tmpb + carry - 2)  : (tmpa +tmpb + carry);
+            carry = (tmpa +tmpb + carry) >= 2 ? 1 : 0;
+            j--;
+            i--;
+            result.append(sum);
+        }
+        if(carry > 0) {
+            result.append('1');
+        }
+        return result.reverse().toString();
+    }
+    public static void main(String[] args){
+        TestInt addBtest = new TestInt();
+        System.out.println(addBtest.addBinary("11000000000", "10101"));
+    }
+}
