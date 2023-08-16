@@ -1,6 +1,8 @@
+
 public class IntTest {
     public int countlenmax(String[] strs) {
         int lenmax = 0;
+        /*
         boolean[][] charhash = new boolean[strs.length][26];
 
         for (int i = 0; i < strs.length; i++) {
@@ -22,6 +24,20 @@ public class IntTest {
                     }
                 }
                 if(count == 26) {
+                    lenmax = Math.max(lenmax, strs[j].length() * strs[k].length());
+                }
+            }
+        }
+         */
+        int[] inthash = new int[strs.length];
+        for (int i = 0; i < strs.length; i++) {
+            for ( char tmp : strs[i].toCharArray()) {
+                inthash[i] = inthash[i] | (1 << tmp - 'a');
+            }
+        }
+        for (int j = 0; j < strs.length; j++ ) {
+            for (int k = j + 1; k < strs.length; k++) {
+                if ((inthash[j] & inthash[k]) == 0) {
                     lenmax = Math.max(lenmax, strs[j].length() * strs[k].length());
                 }
             }
