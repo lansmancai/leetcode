@@ -1,0 +1,22 @@
+public class IntTest {
+    public int countSingle(int[] nums) {
+        int[] result = new int[32];
+        int single = 0;
+        for(int num : nums) {
+            for(int i = 0; i <= 31; i++) {
+                result[i] += (num>>(31 - i) & 1);
+            }
+        }
+        for(int j = 0; j <= 31; j++) {
+            if(result[j] % 3 != 0 ) {
+                single += 1<<(31 - j);
+            }
+        }
+        return single;
+    }
+    public static void main(String[] args){
+        IntTest cB = new IntTest();
+        int[] threeNums = {1,1,1,8,8,8,2,2,2,6,6,6,9};
+        System.out.println(cB.countSingle(threeNums));
+    }
+}
