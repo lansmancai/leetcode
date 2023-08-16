@@ -1,0 +1,37 @@
+public class IntTest {
+    public int countlenmax(String[] strs) {
+        int lenmax = 0;
+        boolean[][] charhash = new boolean[strs.length][26];
+
+        for (int i = 0; i < strs.length; i++) {
+            char[] tmp = strs[i].toCharArray();
+            for (char c : tmp) {
+                charhash[i][c - 'a'] = true;
+            }
+        }
+
+        for (int j = 0; j < strs.length; j++ ) {
+            for (int k = j + 1; k < strs.length; k++ ) {
+                int count = 0;
+                for(int m = 0; m < 26; m++) {
+                    if (charhash[j][m] && charhash[k][m]) {
+                        break;
+                    }
+                    else {
+                        count++;
+                    }
+                }
+                if(count == 26) {
+                    lenmax = Math.max(lenmax, strs[j].length() * strs[k].length());
+                }
+            }
+        }
+        return lenmax;
+
+    }
+    public static void main(String[] args){
+        IntTest cB = new IntTest();
+        String[] teststr = new String[] {"abcw", "foo", "bar", "fxyz", "abcdef","yyyyyyyyyyyyyyy"};
+        System.out.println(cB.countlenmax(teststr));
+    }
+}
