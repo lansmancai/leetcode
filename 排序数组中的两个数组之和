@@ -1,0 +1,24 @@
+import java.util.Arrays;
+
+public class ArrayTest {
+    public int[] arraySum(int[] nums, int target) {
+        int i = 0;
+        int j = nums.length - 1;
+
+        while (i < j) {
+            if (nums[i] + nums[j] < target) {
+                i++;
+            } else if (nums[i] + nums[j] > target) {
+                j--;
+            } else {
+                break;
+            }
+        }
+        return new int[] { i, j};
+    }
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 4, 6, 10};
+        ArrayTest at = new ArrayTest();
+        System.out.println(Arrays.toString(at.arraySum(nums, 14)));
+    }
+}
