@@ -1,0 +1,29 @@
+public class ArrayTest {
+    public int  minLength(int[] nums, int target) {
+        int left = 0;
+        int sum = 0;
+        int minl = Integer.MAX_VALUE;
+        for (int right = 0; right < nums.length; right++) {
+            if (sum < target) {
+                sum += nums[right];
+            }
+            while (sum >= target && left <= right ) {
+                minl = Math.min( minl, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+            if(left > right) {//如果这种是单个数就可以符合，不需要继续计算，直接退出
+                minl = 1;
+                break;
+            }
+        }
+        minl = (minl == Integer.MAX_VALUE)? 0 : minl;
+        return minl;
+    }
+    public static void main(String[] args) {
+        int[] nums = {5, 1, 4, 3, 5, 6, 8, 7,2};
+        ArrayTest at = new ArrayTest();
+        int result = at.minLength(nums, 5);
+        System.out.println(result);
+    }
+}
