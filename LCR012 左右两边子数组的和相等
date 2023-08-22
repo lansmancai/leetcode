@@ -1,0 +1,28 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class ArrayTest {
+    public int pivotIndex(int[] nums) {
+        int total = 0;
+        int sum = 0;
+        int i = 0;
+
+        for (int num : nums) {
+            total += num;
+        }
+
+        for(; i < nums.length; i++) {
+            sum += nums[i];
+            if (sum - nums[i] == total -sum) {
+                break;
+            }
+        }
+        return i == nums.length? -1 : i;
+    }
+    public static void main(String[] args) {
+        int[] nums = {1, 7, 3, 6, 5, 6};
+        ArrayTest at = new ArrayTest();
+        int result = at.pivotIndex(nums);
+        System.out.println(result);
+    }
+}
