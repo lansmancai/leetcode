@@ -1,0 +1,28 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class ArrayTest {
+    public int findMaxLength(int[] nums) {
+        Map<Integer, Integer> sumToCount = new HashMap<>();
+        sumToCount.put(0, -1);
+        int sum = 0;
+        int maxlen = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i] == 0? -1 : 1;
+            if(sumToCount.containsKey(sum)) {
+                maxlen = Math.max(maxlen, i - sumToCount.get(sum));
+            }
+            else {
+                sumToCount.put(sum, i);
+            }
+        }
+        return maxlen;
+    }
+    public static void main(String[] args) {
+        int[] nums = {1, 0, 1, 0, 0, 1, 0};
+        ArrayTest at = new ArrayTest();
+        int result = at.findMaxLength(nums);
+        System.out.println(result);
+    }
+}
