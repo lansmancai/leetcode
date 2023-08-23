@@ -1,0 +1,32 @@
+public class stringTest {
+    public boolean checkInclusion(String s1, String s2) {
+        int[] counts = new int[26];
+        if(s1.length() > s2.length()) {
+            return false;
+        }
+
+        for(int i = 0; i < s1.length(); i++) {
+            counts[s1.charAt(i)- 'a']++;
+        }
+
+        for(int j = 0; j < s2.length(); j++) {
+            counts[s2.charAt(j) - 'a']--;
+            if(j - s1.length() >= 0) {
+                counts[s2.charAt(j - s1.length()) - 'a']++;
+            }
+
+            int k = 0;
+            for( ; k < 26; k++) {
+                if(counts[k] != 0) break;
+            }
+            if(k == 26) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        stringTest st = new stringTest();
+        System.out.println(st.checkInclusion("ac", "dgcaf"));
+    }
+}
