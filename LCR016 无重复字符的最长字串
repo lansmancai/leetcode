@@ -1,0 +1,56 @@
+import java.util.LinkedList;
+import java.util.List;
+
+public class stringTest {
+    public int lengthOfLongestSubstring(String s) {
+        /*
+        int[] counts = new int[256];
+        int longest = s.length() > 0 ? 1 : 0;
+        for (int i = 0, j = -1; i < s.length(); ++i) {
+            counts[s.charAt(i)]++;
+            while (hasGreaterThan1(counts)) {
+                ++j;
+                counts[s.charAt(j)]--;
+            }
+
+            longest = Math.max(i - j, longest);
+        }
+
+        return longest;
+    }
+    private boolean hasGreaterThan1(int[] counts) {
+        for (int count : counts) {
+            if (count > 1) {
+                return true;
+            }
+        }
+
+        return false;
+         */
+        int[] counts = new int[256];
+        int longest = s.length() > 0 ? 1 : 0;
+        int countDup = 0;
+        for (int i = 0, j = -1; i < s.length(); ++i) {
+            counts[s.charAt(i)]++;
+            if (counts[s.charAt(i)] == 2) {
+                countDup++;
+            }
+
+            while (countDup > 0) {
+                ++j;
+                counts[s.charAt(j)]--;
+                if (counts[s.charAt(j)] == 1) {
+                    countDup--;
+                }
+            }
+
+            longest = Math.max(i - j, longest);
+        }
+
+        return longest;
+    }
+    public static void main(String[] args) {
+        stringTest st = new stringTest();
+        System.out.println(st.lengthOfLongestSubstring("dgcafacfsdfsdfsac"));
+    }
+}
