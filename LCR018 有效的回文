@@ -1,0 +1,38 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class stringTest {
+    public boolean isPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) >= 'a' && s.charAt(i) <= 'z') {
+                sb.append(s.charAt(i));
+            }
+            if(s.charAt(i) >= 'A' && s.charAt(i) <= 'Z') {
+                sb.append((char)(s.charAt(i) + 32));
+            }
+            if(s.charAt(i) >= 48 && s.charAt(i) <= 57) {
+                sb.append(s.charAt(i) - 48);
+            }
+        }
+        //System.out.println(sb.toString());
+        String ispalStr = sb.toString();
+        int p = 0;
+        int q = ispalStr.length() - 1;
+        while(p <= q) {
+            if(ispalStr.charAt(p) == ispalStr.charAt(q)) {
+                p++;
+                q--;
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+    }
+    public static void main(String[] args) {
+        stringTest st = new stringTest();
+        System.out.println(st.isPalindrome("Aff0-ssdfsweeefsfsDOBECODEBANCABC"));
+    }
+}
