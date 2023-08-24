@@ -1,0 +1,46 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class stringTest {
+    public String minWindow(String s, String t) {
+        int[] counts = new int[58];
+        int numcount = 0;
+        int left = 0;
+        int minwin = Integer.MAX_VALUE;
+        int lastleft = 0;
+        int lastright = 0;
+        for (int i = 0; i < t.length(); i++) {
+            counts[t.charAt(i) - 'A']--;
+            if (counts[t.charAt(i) - 'A'] == -1) numcount++;
+        }
+
+        for (int right = 0; right < s.length(); right++) {
+            counts[s.charAt(right) - 'A']++;
+            if (counts[s.charAt(right) - 'A'] == 0) numcount--;
+            while (numcount == 0) {
+                //System.out.println(left + " " + right);
+                if (right - left + 1 < minwin) {
+                    minwin = right - left + 1;
+                    lastright = right;
+                    lastleft = left;
+                }
+                counts[s.charAt(left) - 'A']--;
+                if (counts[s.charAt(left) - 'A'] == -1) numcount++;
+                left++;
+            }
+        }
+
+        minwin = minwin == Integer.MAX_VALUE? 0: minwin;
+        if(minwin == 0) {
+            return "";
+        }
+        else {
+            return s.substring(lastleft, lastright + 1);
+        }
+    }
+    public static void main(String[] args) {
+        stringTest st = new stringTest();
+        System.out.println(st.minWindow("ADOBECODEBANC", "ABC"));
+    }
+}
