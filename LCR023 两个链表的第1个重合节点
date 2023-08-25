@@ -1,0 +1,49 @@
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB ==null) {
+            return null;
+        }
+
+        int lenA = 0;
+        int lenB = 0;
+
+        ListNode tmpA = headA;
+        ListNode tmpB = headB;
+
+        while(tmpA != null) {
+            lenA++;
+            tmpA = tmpA.next;
+        }
+        while(tmpB != null) {
+            lenB++;
+            tmpB = tmpB.next;
+        }
+
+        tmpA = headA;
+        tmpB = headB;
+
+        if(lenA > lenB) {
+            int i = lenA - lenB;
+            while(i > 0) {
+                tmpA = tmpA.next;
+                i--;
+            }
+        }
+        if(lenA < lenB) {
+            int j = lenB - lenA;
+            while(j > 0) {
+                tmpB = tmpB.next;
+                j--;
+            }
+        }
+
+        while(tmpA != null) {
+            if(tmpA == tmpB) {
+                return tmpA;
+            }
+            tmpA = tmpA.next;
+            tmpB = tmpB.next;
+        }
+        return null;
+    }
+}
