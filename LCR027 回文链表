@@ -1,0 +1,70 @@
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head == null) return false;
+        if(head.next == null) return true;
+        ListNode mid = findMiddle(head);
+        mid = reverseList(mid);
+        while(mid != null) {
+            if(mid.val != head.val) return false;
+            head = head.next;
+            mid = mid.next;
+        }
+        return true;
+    }
+
+    public ListNode findMiddle(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode slow = dummy;
+        ListNode fast = dummy;
+
+        while(slow != null && fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+            if(fast != null) fast = fast.next;
+        }
+        return slow;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if(head == null) {
+            return null;
+        }
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = null;
+
+        while(cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+
+    public ListNode arrayToList(int[] nums) {
+        ListNode dummy = new ListNode(0);
+        ListNode tmp = dummy;
+        for(int num : nums) {
+            tmp.next = new ListNode(num);
+            tmp = tmp.next;
+        }
+        return dummy.next;
+    }
+    public void printList(ListNode head) {
+        while(head != null) {
+            System.out.println(head.val);
+            head = head.next;
+        }
+        System.out.println("--------------");
+    }
+
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        int[] nums = {1, 2 };
+        ListNode head = st.arrayToList(nums);
+        st.printList(head);
+        System.out.println(st.isPalindrome(head));
+    }
+}
