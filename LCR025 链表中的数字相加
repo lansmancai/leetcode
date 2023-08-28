@@ -1,0 +1,84 @@
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        l1 = reverseList(l1);
+        l2 = reverseList(l2);
+        printList(l1);
+        printList(l2);
+        ListNode reversedHead = addReversed(l1, l2);
+        return reverseList(reversedHead);
+    }
+    public ListNode addReversed(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode sumNode = dummy;
+        int carry = 0;
+
+        while(l1 !=null || l2 != null) {
+            int sum = 0;
+            if(l1 != null && l2 != null) {
+                sum = (l1.val + l2.val + carry) >= 10 ? (l1.val + l2.val + carry) - 10 : (l1.val + l2.val + carry);
+                carry = (l1.val + l2.val + carry) >= 10 ? 1 : 0;
+            }
+            if(l1 == null && l2 != null) {
+                sum = (l2.val + carry) >= 10 ? (l2.val + carry) - 10 : (l2.val + carry);
+                carry = (l2.val + carry) >= 10 ? 1 : 0;
+            }
+            if(l1 != null && l2 == null) {
+                sum = (l1.val + carry) >= 10 ? (l1.val + carry) - 10 : (l1.val + carry);
+                carry = (l1.val + carry) >= 10 ? 1 : 0;
+            }
+            l1 = l1 == null ? null : l1.next;
+            l2 = l2 == null ? null : l2.next;
+            ListNode sumtmp = new ListNode(sum);
+            sumNode.next = sumtmp;
+            sumNode = sumNode.next;
+        }
+        if (carry > 0) sumNode.next = new ListNode(1);
+
+        return dummy.next;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if(head == null) {
+            return null;
+        }
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = null;
+
+        while(cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+
+        return pre;
+    }
+    public ListNode arrayToList(int[] nums) {
+        ListNode dummy = new ListNode(0);
+        ListNode tmp = dummy;
+        for(int num : nums) {
+            tmp.next = new ListNode(num);
+            tmp = tmp.next;
+        }
+        return dummy.next;
+    }
+    public void printList(ListNode head) {
+        while(head != null) {
+            System.out.println(head.val);
+            head = head.next;
+        }
+        System.out.println("--------------");
+    }
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        int[] nums1 = {0};
+        int[] nums2 = {0};
+        ListNode head1 = st.arrayToList(nums1);
+        st.printList(head1);
+        ListNode head2 = st.arrayToList(nums2);
+        st.printList(head2);
+        ListNode head3 = st.addTwoNumbers(head1, head2);
+        st.printList(head3);
+    }
+}
