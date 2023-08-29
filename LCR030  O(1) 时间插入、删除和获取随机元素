@@ -1,4 +1,7 @@
 class RandomizedSet {
+    private HashMap<Integer, Integer> numToLocation;
+    private ArrayList<Integer> nums;
+
     public RandomizedSet() {
         numToLocation = new HashMap<>();
         nums = new ArrayList<>();
