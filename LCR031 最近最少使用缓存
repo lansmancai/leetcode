@@ -1,0 +1,86 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class LRUCache {
+    private ListNode head;
+    private ListNode tail;
+    private Map<Integer, ListNode> map;
+    int capacity;
+
+    public LRUCache(int cap) {
+        map = new HashMap<>();
+
+        head = new ListNode(-1, -1);
+        tail = new ListNode(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+
+        capacity = cap;
+    }
+
+    public int get(int key) {
+        ListNode node = map.get(key);
+        if (node == null) {
+            return -1;
+        }
+
+        moveToTail(node, node.value);
+
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            moveToTail(map.get(key), value);
+        } else {
+            if (map.size() == capacity) {
+                ListNode toBeDeleted = head.next;
+                deleteNode(toBeDeleted);
+
+                map.remove(toBeDeleted.key);
+            }
+
+            ListNode node = new ListNode(key, value);
+            insertToTail(node);
+
+            map.put(key, node);
+        }
+    }
+
+    private void moveToTail(ListNode node, int newValue) {
+        deleteNode(node);
+
+        node.value = newValue;
+        insertToTail(node);
+    }
+
+    private void deleteNode(ListNode node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void insertToTail(ListNode node) {
+        tail.prev.next = node;
+        node.prev = tail.prev;
+        node.next = tail;
+        tail.prev = node;
+    }
+    private void printLru() {
+        for(ListNode value : map.values()) {
+            System.out.println(value.key + "---" + value.value);
+        }
+        System.out.println("---------------------");
+    }
+
+    public static void main(String[] args) {
+        LRUCache lru = new LRUCache(5);
+        lru.put(1, 6);
+        lru.put(2, 7);
+        lru.put(3, 8);
+        lru.put(4, 9);
+        lru.put(5,10);
+        lru.printLru();
+        lru.put(7,19);
+        lru.printLru();
+    }
+}
