@@ -1,0 +1,48 @@
+import java.util.Arrays;
+import java.util.List;
+
+public class timeCount {
+    public int findMinDifference(List<String> timePoints) {
+        boolean[] timenum = new boolean[1440];
+        if(timePoints.size() > 1440) return 0;
+
+        for(String timePoint : timePoints) {
+            String[] t = timePoint.split(":");
+            int minute = Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
+
+            if (timenum[minute]) return 0;
+            timenum[minute] = true;
+        }
+
+        int p = -1;
+        int q = -1;
+        int mingap = 1440;
+        int begin = -1;
+        int last = -1;
+
+        for(int i = 0; i < timenum.length; i++) {
+            if(timenum[i] == true) {
+                if(p == -1 && q == -1) {
+                    q = i;
+                    begin = i;
+                }
+                else {
+                    p = q;
+                    q = i;
+                    last = i;
+                    mingap = Math.min(mingap, q - p);
+                }
+            }
+        }
+        if(mingap == 1) return 1;
+        mingap = Math.min(mingap, begin + 1440 - last );
+        return mingap;
+    }
+    public static void main(String[] args) {
+        timeCount tc = new timeCount();
+        String[] array = {"8:32", "23:59", "00:00"};
+        List<String> timenums = Arrays.asList(array);
+        int mintgap = tc.findMinDifference(timenums);
+        System.out.println(mintgap);
+    }
+}
