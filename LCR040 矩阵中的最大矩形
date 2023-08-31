@@ -1,0 +1,65 @@
+import java.util.Stack;
+
+public class Solution {
+    public int maximalRectangle(String[] matrix) {
+        int maxArea = -1;
+        if(matrix.length == 0 || matrix[0].length() == 0) {
+            return 0;
+        }
+        int[] heights = new int[matrix[0].length()];
+
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j< matrix[0].length(); j++) {
+                if(matrix[i].charAt(j) == '0') {
+                    heights[j] = 0;
+                }
+                else {
+                    heights[j] += 1;
+                }
+            }
+            maxArea = Math.max(maxArea, largestRectangleArea(heights));
+        }
+        return maxArea == -1 ? 0 : maxArea;
+    }
+    public int largestRectangleArea(int[] heights) {
+        if(heights.length == 1) return heights[0];
+        if(heights.length == 2) return Math.max(Math.max(heights[0], heights[1]), Math.min(heights[0], heights[1]) * 2);
+
+        int maxArea = -1;
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = 0; i < heights.length; i++) {
+            if(stack.isEmpty() || heights[i] > heights[stack.peek()]) {
+                stack.push(i);
+                continue;
+            }
+            while(heights[i] < heights[stack.peek()]) {
+                int tmp = stack.pop();
+                if(stack.isEmpty()) {
+                    maxArea = Math.max(maxArea, heights[tmp] * i);
+                    break;
+                }
+                else {
+                    maxArea = Math.max(maxArea, heights[tmp] * (i - stack.peek() - 1));
+                }
+            }
+            stack.push(i);
+        }
+
+        while(!stack.isEmpty()) {
+            int stacktmp = stack.pop();
+            if(stack.isEmpty()) {
+                maxArea = Math.max(maxArea, heights[stacktmp] * heights.length);
+            }
+            else {
+                maxArea = Math.max(maxArea, heights[stacktmp] * (heights.length - stack.peek() - 1));
+            }
+        }
+
+        return maxArea;
+    }
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        String[] matrix = {"10100", "10111", "11111", "10010"};
+        System.out.println(st.maximalRectangle(matrix));
+    }
+}
