@@ -1,0 +1,62 @@
+public class Solution {
+
+    static int count;
+    static TreeNode root;
+
+    public int pathSum(TreeNode root, int targetSum) {
+        dfs(root, targetSum);
+        return count;
+    }
+
+    public void dfs(TreeNode root, int targetSum) {
+        if(root == null) return;
+        count(root, 0, targetSum);
+        if(root.left != null) dfs(root.left, targetSum);
+        if(root.right != null) dfs(root.right, targetSum);
+    }
+
+    public void count(TreeNode root, int path, int targetSum) {
+        if(root == null) return;
+        path += root.val;
+        if(path == targetSum) {
+            count++;
+        }
+        if(root.left != null) {
+            count(root.left, path, targetSum);
+        }
+        if(root.right != null) {
+            count(root.right, path, targetSum);
+        }
+    }
+    public void buildTree(String[] tns) {
+        TreeNode[] tnarray = new TreeNode[tns.length];
+        for(int i = 0; i < tns.length; i++){
+            if(tns[i] == "null") {
+                tnarray[i] = null;
+            }
+            else {
+                tnarray[i] = new TreeNode(Integer.valueOf(tns[i]));
+            }
+        }
+        int p = 0;
+        int q = 1;
+        for( ; q + 1 < tns.length; p++) {
+            if(tnarray[p] == null) continue;
+            tnarray[p].left = tnarray[q];
+            tnarray[p].right = tnarray[q + 1];
+            q += 2;
+        }
+        if (q == tns.length - 1) {
+            tnarray[p + 1].left = tnarray[q];
+        }
+        root = tnarray[0];
+    }
+    public static void main(String[] args) {
+        //String[] tns = {"10", "5", "-3", "3", "2", "null", "11", "3", "-2", "null", "1"};
+        String[] tns = {"5", "4", "8", "11", "null", "13", "4", "7", "2", "null", "null", "5", "1"};
+        Solution st = new Solution();
+        st.buildTree(tns);
+        System.out.println(st.pathSum(root, 15));
+    }
+
+}
