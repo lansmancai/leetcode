@@ -1,0 +1,44 @@
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        if(nums.length == 1) return nums[0];
+        int k = (nums.length - 1) / 2;
+        int left = 0;
+        int right = k - 1;
+        int mid = -1;
+        int single = -1;
+
+        while(left <= right) {
+            mid = (left + right) / 2;
+            if(compare(nums, mid)) {
+                left = mid + 1;
+            }
+            else {
+                right = mid;
+            }
+            if(left == right){
+                mid = (left + right) / 2;
+                break;
+            }
+        }
+        if(compare(nums, mid)) {
+            single = nums[nums.length - 1];
+        }
+        else {
+            single = nums[mid * 2];
+        }
+        return single;
+    }
+    public boolean compare(int[] nums, int k) {
+        if(nums[2 * k] == nums[2 * k + 1]) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        int[] nums = {1,1,2,3,3,4,4,8,8};
+        System.out.println(st.singleNonDuplicate(nums));
+    }
+}
