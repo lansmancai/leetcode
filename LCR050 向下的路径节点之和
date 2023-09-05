@@ -72,3 +72,32 @@ public class Solution {
     }
 
 }
+
+//上述代码可用哈希表进一步优化，减少计算
+class Solution {
+public int pathSum(TreeNode root, int sum) {
+    Map<Long, Integer> map = new HashMap<>();
+    map.put(0L, 1);
+
+    return dfs(root, sum, map, 0L);
+}
+
+private int dfs(TreeNode root, int sum,
+    Map<Long, Integer> map, long path) {
+    if (root == null) {
+        return 0;
+    }
+
+    path += root.val;
+    int count = map.getOrDefault(path - sum, 0);
+    map.put(path, map.getOrDefault(path, 0) + 1);
+
+    count += dfs(root.left, sum, map, path);
+    count += dfs(root.right, sum, map, path);
+
+    map.put(path, map.get(path) - 1);
+
+    return count;
+}
+}
+
