@@ -1,0 +1,36 @@
+import java.util.*;
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> numToCount = new HashMap<>();
+        for(int num : nums) {
+            numToCount.put(num, numToCount.getOrDefault(num, 0) + 1);
+        }
+
+        Queue<Map.Entry<Integer, Integer>> minHeap = new PriorityQueue<>(
+                (e1, e2) -> e1.getValue() - e2.getValue());
+        for (Map.Entry<Integer, Integer> entry : numToCount.entrySet()) {
+            if (minHeap.size() < k) {
+                minHeap.offer(entry);
+            } else {
+                if (entry.getValue() > minHeap.peek().getValue()) {
+                    minHeap.poll();
+                    minHeap.offer(entry);
+                }
+            }
+        }
+
+        int[] result = new int[k];
+        for (int i = k - 1; i >= 0; i--) {
+            result[i] = minHeap.poll().getKey();
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1,1,1,2,2,3};
+        Solution st = new Solution();
+        System.out.println(Arrays.toString(st.topKFrequent(nums, 2)));
+    }
+}
