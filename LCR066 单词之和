@@ -1,0 +1,58 @@
+class MapSum {
+    
+    static class TreeNode {
+        public TreeNode[] children;
+        public int value;
+        
+        public TreeNode() {
+            children = new TreeNode[26];
+        }
+    }
+    
+    private TreeNode root;
+
+    public MapSum() {
+        root = new TreeNode();
+    }
+    
+    public void insert(String key, int val) {
+        TreeNode node = root;
+        for (int i = 0; i < key.length(); ++i) {
+            char ch = key.charAt(i);
+            if (node.children[ch - 'a'] == null) {
+                node.children[ch - 'a'] = new TreeNode();
+            }
+            
+            node = node.children[ch - 'a'];
+        }
+        
+        node.value = val;
+    }
+    
+    public int sum(String prefix) {
+        TreeNode node = root;
+        for (int i = 0; i < prefix.length(); ++i) {
+            char ch = prefix.charAt(i);
+            if (node.children[ch - 'a'] == null) {
+                return 0;
+            }
+            
+            node = node.children[ch - 'a'];
+        }
+        
+        return getSum(node);
+    }
+    
+    private int getSum(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        int result = node.value;
+        for (TreeNode child : node.children) {
+            result += getSum(child);
+        }
+        
+        return result;
+    }
+}
