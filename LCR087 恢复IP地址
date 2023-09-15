@@ -1,0 +1,29 @@
+class Solution {
+public List<String> restoreIpAddresses(String s) {
+    List<String> result = new LinkedList<>();
+    helper(s, 0, 0, "", "", result);
+
+    return result;
+}
+
+private void helper(String s, int index, int segIndex,
+    String seg, String ip, List<String> result) {
+    if (index == s.length() && segIndex == 3 && isValidSeg(seg)) {
+        result.add(ip + seg);
+    } else if (index < s.length() && segIndex <= 3) {
+        char ch = s.charAt(index);
+        if (isValidSeg(seg + ch)) {
+            helper(s, index + 1, segIndex, seg + ch, ip, result);
+        }
+
+        if (seg.length() > 0 && segIndex < 3) {
+            helper(s, index, segIndex + 1, "", ip + seg + ".", result);
+        }
+    }
+}
+
+private boolean isValidSeg(String seg) {
+    return Integer.valueOf(seg) <= 255
+        && (seg.equals("0") || seg.charAt(0) != '0');
+}
+}
