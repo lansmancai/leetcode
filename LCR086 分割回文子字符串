@@ -1,0 +1,37 @@
+class Solution {
+    public String[][] partition(String s) {
+    List<List<String>> result = new ArrayList<>();
+    helper(s, 0, new LinkedList<>(), result);
+    String[][] res = new String[result.size()][]; // 存放转换结果的 二维数组
+    for(int i=0; i<res.length; i++){ // 转换方法
+        res[i] = result.get(i).toArray(new String[result.get(i).size()]);
+    }
+    return res;
+}
+
+private void helper(String str, int start,
+    LinkedList<String> substrings, List<List<String>> result) {
+    if (start == str.length()) {
+        result.add(new LinkedList<>(substrings));
+        return;
+    }
+
+    for (int i = start; i < str.length(); ++i) {
+        if (isPalindrome(str, start, i)) {
+            substrings.add(str.substring(start, i + 1));
+            helper(str, i + 1, substrings, result);
+            substrings.removeLast();
+        }
+    }
+}
+
+private boolean isPalindrome(String str, int start, int end) {
+    while (start < end) {
+        if (str.charAt(start++) != str.charAt(end--)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+}
