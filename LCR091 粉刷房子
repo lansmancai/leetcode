@@ -1,0 +1,40 @@
+class Solution {
+    public int minCost(int[][] costs) {
+        /*
+        int[] red = new int[costs.length];
+        int[] blue = new int[costs.length];
+        int[] green = new int[costs.length];
+        red[0] = costs[0][0];
+        blue[0] = costs[0][1];
+        green[0] = costs[0][2];
+
+        for(int i = 1; i < costs.length; i++) {
+            red[i] = costs[i][0] + Math.min(blue[i - 1], green[i - 1]);
+            blue[i] = costs[i][1] + Math.min(red[i - 1], green[i - 1]);
+            green[i] = costs[i][2] + Math.min(blue[i - 1], red[i - 1]);
+        }
+
+        return Math.min(red[costs.length - 1], Math.min(blue[costs.length - 1], green[costs.length - 1]));
+         */
+        if(costs.length == 1) {
+            return Math.min(costs[0][0], Math.min(costs[0][1], costs[0][2]));
+        }
+        int[] red = new int[2];
+        int[] blue = new int[2];
+        int[] green = new int[2];
+        red[0] = costs[0][0];
+        blue[0] = costs[0][1];
+        green[0] = costs[0][2];
+        for(int i = 1; i < costs.length; i++) {
+            red[i % 2] = costs[i][0] + Math.min(blue[((i % 2) + 1) % 2], green[((i % 2) + 1) % 2]);
+            blue[i % 2] = costs[i][1] + Math.min(red[((i % 2) + 1) % 2], green[((i % 2) + 1) % 2]);
+            green[i % 2] = costs[i][2] + Math.min(blue[((i % 2) + 1) % 2], red[((i % 2) + 1) % 2]);
+        }
+        return Math.min(red[(costs.length - 1) % 2], Math.min(blue[(costs.length - 1) % 2], green[(costs.length - 1) % 2]));
+    }
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        int[][] costs = {{17,2,17},{16,16,5},{14,3,19}};
+        System.out.println(st.minCost(costs));
+    }
+}
