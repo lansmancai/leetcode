@@ -1,0 +1,55 @@
+class Solution {
+    public int minFlipsMonoIncr(String s) {
+        /*
+        int[] lastone = new int[s.length()];
+        int[] lastzero = new int[s.length()];
+
+        if(s.charAt(0) == '1') {
+            lastone[0] = 0;
+            lastzero[0] = 1;
+        }
+        else {
+          lastone[0] = 1;
+          lastzero[0] = 0;
+        }
+        for(int i = 1; i < s.length(); i++) {
+            if(s.charAt(i) == '1') {
+                lastone[i] = Math.min(lastone[i - 1], lastzero[i - 1]);
+                lastzero[i] = lastzero[i - 1] + 1;
+            }
+            else {
+                lastone[i] = Math.min(lastone[i - 1], lastzero[i - 1]) + 1;
+                lastzero[i] = lastzero[i - 1];
+            }
+        }
+        return Math.min(lastone[s.length() - 1], lastzero[s.length() - 1]);
+         */
+        int[] lastone = new int[2];
+        int[] lastzero = new int[2];
+        if(s.charAt(0) == '1') {
+            lastone[0] = 0;
+            lastzero[0] = 1;
+        }
+        else {
+            lastone[0] = 1;
+            lastzero[0] = 0;
+        }
+        for(int i = 1; i < s.length(); i++) {
+            if(s.charAt(i) == '1') {
+                lastone[i % 2] = Math.min(lastone[((i % 2) + 1) % 2], lastzero[((i % 2) + 1) % 2]);
+                lastzero[i % 2] = lastzero[((i % 2) + 1) % 2] + 1;
+            }
+            else {
+                lastone[i % 2] = Math.min(lastone[((i % 2) + 1) % 2], lastzero[((i % 2) + 1) % 2]) + 1;
+                lastzero[i % 2] = lastzero[((i % 2) + 1) % 2];
+            }
+        }
+        return Math.min(lastone[(s.length() - 1) % 2], lastzero[(s.length() - 1) % 2]);
+
+    }
+    public static void main(String[] args) {
+        Solution st = new Solution();
+        String s = "00011000";
+        System.out.println(st.minFlipsMonoIncr(s));
+    }
+ }
